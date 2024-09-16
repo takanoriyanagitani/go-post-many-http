@@ -12,6 +12,12 @@ type SimpleRequest struct {
 
 type SimpleRequestSourceMany func(context.Context) (SimpleRequest, error)
 
+// Converts to the channel of requests.
+//
+// # Arguments
+//   - ctx: A context.
+//   - isEnd: Checks if the error indicates "end" or not(e.g, io.EOF)
+//   - errorHandler: Handles other errors(not "end" error; e.g, not io.EOF)
 func (s SimpleRequestSourceMany) ToChannel(
 	ctx context.Context,
 	isEnd func(error) bool,
