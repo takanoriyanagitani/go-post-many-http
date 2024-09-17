@@ -85,7 +85,7 @@ func main() {
 			default:
 				log.Printf("rejected url:      %s\n", req.Url)
 				log.Printf("rejected type:     %s\n", req.ContentType)
-				log.Printf("rejected body len: %s\n", len(req.Body))
+				log.Printf("rejected body len: %v\n", len(req.Body))
 				return fmt.Errorf("unexpected status: %v", code)
 			}
 		},
