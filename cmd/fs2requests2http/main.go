@@ -42,6 +42,11 @@ var BodyDir string = getenvOrAlt("ENV_TRUSTED_DIR_NAME", "./requests.d")
 var TargetUrl string = getenvOrAlt("ENV_TARGET_URL", "http://localhost")
 var TargetTyp string = getenvOrAlt("ENV_TARGET_TYP", "text/plain")
 
+var SaveRequestOnError string = getenvOrAlt("ENV_SAVE_REQ", "false")
+var SaveNameOnError string = getenvOrAlt("ENV_SAVE_NAME", "./err.dat")
+
+var SaveReqOnError bool = "true" == SaveRequestOnError
+
 var MaxBodySize int = parseIntOrAlt(
 	getenvOrAlt("ENV_MAX_BODY_SIZE", "1048576"),
 	1048576,
@@ -52,6 +57,9 @@ func main() {
 	log.Printf("max body size(ENV_MAX_BODY_SIZE): %v\n", MaxBodySize)
 	log.Printf("target url(ENV_TARGET_URL): %s\n", TargetUrl)
 	log.Printf("target typ(ENV_TARGET_TYP): %s\n", TargetTyp)
+
+	log.Printf("save request on error(ENV_SAVE_REQ): %s\n", SaveRequestOnError)
+	log.Printf("save name on error(ENV_SAVE_NAME): %s\n", SaveNameOnError)
 
 	rawSrcFs := fd.RawSourceManyFsDir{
 		TrustedDirName: ".",
@@ -86,6 +94,13 @@ func main() {
 				log.Printf("rejected url:      %s\n", req.Url)
 				log.Printf("rejected type:     %s\n", req.ContentType)
 				log.Printf("rejected body len: %v\n", len(req.Body))
+				if SaveReqOnError {
+					os.WriteFile(
+						SaveNameOnError,
+						req.Body,
+						0644,
+					)
+				}
 				return fmt.Errorf("unexpected status: %v", code)
 			}
 		},
