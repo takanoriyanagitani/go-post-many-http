@@ -12,8 +12,7 @@ import (
 
 type SenderStdST struct {
 	*http.Client
-	StatusHandler func(pm.TinyResponse) error
-	ResponseConv  func(*http.Response) (pm.TinyResponse, error)
+	ResponseConv func(*http.Response) (pm.TinyResponse, error)
 }
 
 func (s SenderStdST) Post(
@@ -79,20 +78,17 @@ var StatusHandlerDefault func(pm.TinyResponse) error = StatusHandlerNew(
 
 func SenderStdNewST(
 	client *http.Client,
-	statusHandler func(pm.TinyResponse) error,
 	responseConverter func(*http.Response) (pm.TinyResponse, error),
 ) SenderStdST {
 	return SenderStdST{
-		Client:        client,
-		StatusHandler: statusHandler,
-		ResponseConv:  responseConverter,
+		Client:       client,
+		ResponseConv: responseConverter,
 	}
 }
 
 func SenderStdNewSTdefault(client *http.Client) SenderStdST {
 	return SenderStdNewST(
 		client,
-		StatusHandlerDefault,
 		ResponseToTinyDiscard,
 	)
 }

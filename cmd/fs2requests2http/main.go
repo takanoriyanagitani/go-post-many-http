@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"io/fs"
 	"log"
@@ -76,7 +77,15 @@ func main() {
 	tot, e := sender.SendMany(
 		ctx,
 		requests,
-		func(res pm.TinyResponse) error { return nil },
+		func(res pm.TinyResponse) error {
+			var code int = res.StatusCode
+			switch code {
+			case http.StatusOK:
+				return nil
+			default:
+				return fmt.Errorf("unexpected status: %v", code)
+			}
+		},
 	)
 	if nil != e {
 		log.Fatalf("%v\n", e)
