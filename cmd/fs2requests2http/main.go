@@ -74,15 +74,18 @@ func main() {
 
 	var senderStd hs.SenderStdST = hs.SenderStdNewSTdefault(http.DefaultClient)
 	var sender pm.SenderST = senderStd.ToSender()
-	tot, e := sender.SendMany(
+	tot, e := sender.SendManyEx(
 		ctx,
 		requests,
-		func(res pm.TinyResponse) error {
+		func(res pm.TinyResponse, req pm.SimpleRequest) error {
 			var code int = res.StatusCode
 			switch code {
 			case http.StatusOK:
 				return nil
 			default:
+				log.Printf("rejected url:      %s\n", req.Url)
+				log.Printf("rejected type:     %s\n", req.ContentType)
+				log.Printf("rejected body len: %s\n", len(req.Body))
 				return fmt.Errorf("unexpected status: %v", code)
 			}
 		},
