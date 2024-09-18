@@ -47,8 +47,8 @@ func (r RawSourceManyFsDir) ToRawRequestSourceMany(
 	eof error,
 ) pm.RawRequestSourceMany {
 	dirents, e := r.ReadDirFS.ReadDir(r.TrustedDirName)
-	var buf bytes.Buffer
 	return func(ctx context.Context) (pm.RawRequest, error) {
+		var buf bytes.Buffer
 		if nil != e {
 			return pm.RawRequest{}, e
 		}
