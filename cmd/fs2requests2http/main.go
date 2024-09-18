@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/fs"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"strconv"
@@ -37,6 +38,25 @@ func parseIntOrAlt(s string, alt int) int {
 	}
 }
 
+const DefaultLogLevel slog.Level = slog.LevelInfo
+
+var logLevelMap map[string]slog.Level = map[string]slog.Level{
+	"debug": slog.LevelDebug,
+	"info":  slog.LevelInfo,
+	"warn":  slog.LevelWarn,
+	"error": slog.LevelError,
+}
+
+var LogLevel slog.Level = func(levelString string) slog.Level {
+	level, ok := logLevelMap[levelString]
+	switch ok {
+	case true:
+		return level
+	default:
+		return DefaultLogLevel
+	}
+}(getenvOrAlt("ENV_LOG_LEVEL", "info"))
+
 var BodyDir string = getenvOrAlt("ENV_TRUSTED_DIR_NAME", "./requests.d")
 
 var TargetUrl string = getenvOrAlt("ENV_TARGET_URL", "http://localhost")
@@ -53,13 +73,17 @@ var MaxBodySize int = parseIntOrAlt(
 )
 
 func main() {
-	log.Printf("body dir(ENV_TRUSTED_DIR_NAME): %s\n", BodyDir)
-	log.Printf("max body size(ENV_MAX_BODY_SIZE): %v\n", MaxBodySize)
-	log.Printf("target url(ENV_TARGET_URL): %s\n", TargetUrl)
-	log.Printf("target typ(ENV_TARGET_TYP): %s\n", TargetTyp)
+	slog.SetLogLoggerLevel(LogLevel)
 
-	log.Printf("save request on error(ENV_SAVE_REQ): %s\n", SaveRequestOnError)
-	log.Printf("save name on error(ENV_SAVE_NAME): %s\n", SaveNameOnError)
+	slog.Info("log level set.", "log level", LogLevel)
+
+	slog.Info("body dir set.", "ENV_TRUSTED_DIR_NAME", BodyDir)
+	slog.Info("max body size set.", "ENV_MAX_BODY_SIZE", MaxBodySize)
+	slog.Info("target url set.", "ENV_TARGET_URL", TargetUrl)
+	slog.Info("target typ set.", "ENV_TARGET_TYP", TargetTyp)
+
+	slog.Info("save request on error set.", "ENV_SAVE_REQ", SaveRequestOnError)
+	slog.Info("save name on error set.", "ENV_SAVE_NAME", SaveNameOnError)
 
 	rawSrcFs := fd.RawSourceManyFsDir{
 		TrustedDirName: ".",
@@ -91,9 +115,9 @@ func main() {
 			case http.StatusOK:
 				return nil
 			default:
-				log.Printf("rejected url:      %s\n", req.Url)
-				log.Printf("rejected type:     %s\n", req.ContentType)
-				log.Printf("rejected body len: %v\n", len(req.Body))
+				slog.Info("rejected.", "url", req.Url)
+				slog.Info("rejected.", "type", req.ContentType)
+				slog.Info("rejected.", "body len", len(req.Body))
 				if SaveReqOnError {
 					_ = os.WriteFile(
 						SaveNameOnError,
@@ -108,5 +132,5 @@ func main() {
 	if nil != e {
 		log.Fatalf("%v\n", e)
 	}
-	log.Printf("sent count: %v\n", tot)
+	slog.Info("sent.", "count", tot)
 }
