@@ -47,8 +47,10 @@ func (s SimpleRequestSourceMany) ToChannel(
 
 type RawRequest []byte
 
+// Tries to get a [RawRequest].
 type RawRequestSourceMany func(context.Context) (RawRequest, error)
 
+// Convert to a [SimpleRequestSourceMany].
 func (r RawRequestSourceMany) ToSimpleReqSource(
 	url string,
 	contentType string,
