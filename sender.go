@@ -4,6 +4,7 @@ import (
 	"context"
 )
 
+// Sends a [SimpleRequest] and returns a [TinyResponse].
 type SenderST func(context.Context, SimpleRequest) (TinyResponse, error)
 
 func (s SenderST) SendMany(
