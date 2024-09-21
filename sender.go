@@ -7,6 +7,7 @@ import (
 // Sends a [SimpleRequest] and returns a [TinyResponse].
 type SenderST func(context.Context, SimpleRequest) (TinyResponse, error)
 
+// Sends all requests got from the requests chan.
 func (s SenderST) SendMany(
 	ctx context.Context,
 	requests <-chan SimpleRequest,
