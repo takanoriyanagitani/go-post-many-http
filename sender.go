@@ -34,6 +34,12 @@ func (s SenderST) SendMany(
 	return cnt, nil
 }
 
+// Sends all requests got from the requests chan.
+//
+// # Arguments
+//   - ctx: The context.
+//   - requests: The requests to be sent.
+//   - handleResponse: The handler which handles the response and the request.
 func (s SenderST) SendManyEx(
 	ctx context.Context,
 	requests <-chan SimpleRequest,
