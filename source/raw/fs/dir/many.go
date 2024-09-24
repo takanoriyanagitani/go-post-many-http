@@ -18,6 +18,7 @@ type RawSourceManyFsDir struct {
 	MaxBodySize int64
 }
 
+// Copies bytes from the reader to the buffer using [io.LimitedReader].
 func (r RawSourceManyFsDir) ReaderToBuffer(
 	rdr io.Reader,
 	buf *bytes.Buffer,
