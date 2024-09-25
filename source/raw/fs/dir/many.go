@@ -19,6 +19,10 @@ type RawSourceManyFsDir struct {
 }
 
 // Copies bytes from the reader to the buffer using [io.LimitedReader].
+//
+// # Arguments
+//   - rdr: The reader(input).
+//   - buf: The buffer(output). Will be reset before writes.
 func (r RawSourceManyFsDir) ReaderToBuffer(
 	rdr io.Reader,
 	buf *bytes.Buffer,
