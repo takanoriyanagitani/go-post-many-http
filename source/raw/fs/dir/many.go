@@ -36,6 +36,7 @@ func (r RawSourceManyFsDir) ReaderToBuffer(
 	return e
 }
 
+// Fills the buffer using the contents of the file specified by the filename.
 func (r RawSourceManyFsDir) FilenameToBuffer(
 	filename string,
 	buf *bytes.Buffer,
