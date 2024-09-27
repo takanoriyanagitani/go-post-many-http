@@ -49,6 +49,7 @@ func (r RawSourceManyFsDir) FilenameToBuffer(
 	return r.ReaderToBuffer(f, buf)
 }
 
+// Convert to [pm.RawRequestSourceMany] using the eof as EOF.
 func (r RawSourceManyFsDir) ToRawRequestSourceMany(
 	eof error,
 ) pm.RawRequestSourceMany {
