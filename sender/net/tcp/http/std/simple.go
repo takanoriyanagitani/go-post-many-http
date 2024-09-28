@@ -12,6 +12,8 @@ import (
 
 type SenderStdST struct {
 	*http.Client
+
+	// Converts the [*http.Response].
 	ResponseConv func(*http.Response) (pm.TinyResponse, error)
 }
 
