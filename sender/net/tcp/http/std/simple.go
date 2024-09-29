@@ -17,6 +17,7 @@ type SenderStdST struct {
 	ResponseConv func(*http.Response) (pm.TinyResponse, error)
 }
 
+// Posts the body to the url.
 func (s SenderStdST) Post(
 	url string,
 	contentType string,
