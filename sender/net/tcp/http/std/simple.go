@@ -26,6 +26,7 @@ func (s SenderStdST) Post(
 	return s.Client.Post(url, contentType, bytes.NewReader(body))
 }
 
+// Handles the [pm.SimpleRequest] and returns the [pm.TinyResponse].
 func (s SenderStdST) Handle(req pm.SimpleRequest) (pm.TinyResponse, error) {
 	var url string = req.Url
 	var typ string = req.ContentType
