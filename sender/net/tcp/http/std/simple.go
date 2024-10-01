@@ -43,6 +43,7 @@ func (s SenderStdST) Handle(req pm.SimpleRequest) (pm.TinyResponse, error) {
 	return s.ResponseConv(res)
 }
 
+// Converts to the [pm.SenderST].
 func (s SenderStdST) ToSender() pm.SenderST {
 	return func(
 		_ context.Context,
