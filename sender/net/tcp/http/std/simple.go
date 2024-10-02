@@ -53,6 +53,7 @@ func (s SenderStdST) ToSender() pm.SenderST {
 	}
 }
 
+// Consumes the response body and convert to the [pm.TinyResponse].
 func ResponseToTinyDiscard(
 	original *http.Response,
 ) (pm.TinyResponse, error) {
