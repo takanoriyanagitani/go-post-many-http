@@ -66,6 +66,7 @@ func ResponseToTinyDiscard(
 	return pm.TinyResponse{StatusCode: original.StatusCode}, nil
 }
 
+// Creates a handler which rejects any status other than the specified one.
 func StatusHandlerNew(acceptStatus int) func(pm.TinyResponse) error {
 	return func(res pm.TinyResponse) error {
 		var sts int = res.StatusCode
