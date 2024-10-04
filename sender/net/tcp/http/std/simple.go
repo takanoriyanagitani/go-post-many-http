@@ -79,6 +79,7 @@ func StatusHandlerNew(acceptStatus int) func(pm.TinyResponse) error {
 	}
 }
 
+// A default handler which rejects any status other than the status OK.
 var StatusHandlerDefault func(pm.TinyResponse) error = StatusHandlerNew(
 	http.StatusOK,
 )
