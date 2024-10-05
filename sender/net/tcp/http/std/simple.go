@@ -84,6 +84,7 @@ var StatusHandlerDefault func(pm.TinyResponse) error = StatusHandlerNew(
 	http.StatusOK,
 )
 
+// Creates a [SenderStdST] using the standard http client and the converter.
 func SenderStdNewST(
 	client *http.Client,
 	responseConverter func(*http.Response) (pm.TinyResponse, error),
