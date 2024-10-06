@@ -95,6 +95,7 @@ func SenderStdNewST(
 	}
 }
 
+// Creates a [SenderStdST] using the default converter.
 func SenderStdNewSTdefault(client *http.Client) SenderStdST {
 	return SenderStdNewST(
 		client,
