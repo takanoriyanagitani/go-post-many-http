@@ -95,7 +95,7 @@ func SenderStdNewST(
 	}
 }
 
-// Creates a [SenderStdST] using the default converter.
+// Creates a [SenderStdST] using the default converter([ResponseToTinyDiscard]).
 func SenderStdNewSTdefault(client *http.Client) SenderStdST {
 	return SenderStdNewST(
 		client,
